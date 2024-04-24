@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateAudioDto } from './dto/create-audio.dto';
 import { UpdateAudioDto } from './dto/update-audio.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import { ReadStream, createReadStream } from 'fs';
 import { join } from 'path';
+
+import * as fs from 'fs';
 
 @Injectable()
 export class AudioService {
@@ -33,8 +35,12 @@ export class AudioService {
   }
 
   downloadOne(key: string): ReadStream {
-    return createReadStream(
-      join(process.cwd(), 'storage/python/uploads', 'audios', key),
-    );
+    var filePath = join(process.cwd(), 'storage/python/uploads', 'audios', key);
+
+    if (!fs.existsSync(filePath)) {
+      throw new InternalServerErrorException('File not found');
+    }
+
+    return createReadStream(filePath);
   }
 }

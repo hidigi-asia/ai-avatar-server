@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Response,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { AvatarService } from './avatar.service';
 import { CreateAvatarDto } from './dto/create-avatar.dto';
@@ -49,6 +50,10 @@ export class AvatarController {
   @Get(':key/download')
   async downloadOne(@Param('key') id: string, @Response() res) {
     var file = await this.avatarService.downloadOne(id);
+
+    if (!file) {
+      throw new InternalServerErrorException('File not found');
+    }
 
     file.pipe(res);
 

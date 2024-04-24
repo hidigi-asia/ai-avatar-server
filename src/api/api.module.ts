@@ -17,7 +17,7 @@ import { PrismaModule } from '@/prisma/prisma.module';
     MulterModule.register({
       dest: './storage/python/uploads',
     }),
-    HttpModule,
+    HttpModule.register({}),
     PrismaModule,
     UserModule,
     AvatarModule,

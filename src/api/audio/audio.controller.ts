@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Response,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { AudioService } from './audio.service';
 import { CreateAudioDto } from './dto/create-audio.dto';
@@ -45,7 +46,13 @@ export class AudioController {
 
   @Get(':key/download')
   async downloadOne(@Param('key') id: string, @Response() res) {
+    console.log(id);
+
     var file = await this.audioService.downloadOne(id);
+
+    if (!file) {
+      throw new InternalServerErrorException('File not found');
+    }
 
     file.pipe(res);
 

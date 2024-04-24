@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Response,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { BackgroundService } from './background.service';
 import { CreateBackgroundDto } from './dto/create-background.dto';
@@ -49,6 +50,10 @@ export class BackgroundController {
   @Get(':key/download')
   async downloadOne(@Param('key') id: string, @Response() res) {
     var file = await this.backgroundService.downloadOne(id);
+
+    if (!file) {
+      throw new InternalServerErrorException('File not found');
+    }
 
     file.pipe(res);
 
