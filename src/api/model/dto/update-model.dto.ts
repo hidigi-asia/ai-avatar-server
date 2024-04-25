@@ -6,4 +6,7 @@ export class UpdateModelDto {
   @IsOptional()
   @IsString()
   name?: string;
+  @IsOptional()
+  @IsString()
+  voiceId?: string;
 }
