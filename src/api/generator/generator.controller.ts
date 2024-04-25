@@ -1,4 +1,12 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  InternalServerErrorException,
+  Param,
+  Post,
+  Response,
+} from '@nestjs/common';
 import { GeneratorService } from './generator.service';
 import { ApiTags } from '@nestjs/swagger';
 import { GenerateAudioDto } from './dto/generate-audio.dto';
@@ -17,5 +25,21 @@ export class GeneratorController {
   @Post('generate-video')
   generateVideo(@Body() generateVideoDto: GenerateVideoDto) {
     return this.generatorService.generateVideo(generateVideoDto);
+  }
+
+  @Get('generated/videos/:key/download')
+  async downloadGeneratedVideo(@Param('key') id: string, @Response() res) {
+    var file = await this.generatorService.downloadGeneratedVideo(id);
+
+    if (!file) {
+      throw new InternalServerErrorException('File not found');
+    }
+
+    file.pipe(res);
+
+    res.setHeader('Content-Type', 'audio/mpeg');
+    res.setHeader('Content-Disposition', `attachment; filename=${id}`);
+
+    return res;
   }
 }

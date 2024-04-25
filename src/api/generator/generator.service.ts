@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { HttpService } from '@nestjs/axios';
 import { GenerateAudioDto } from './dto/generate-audio.dto';
@@ -6,6 +6,9 @@ import { GenerateVideoDto } from './dto/generate-video.dto';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
 import { v4 as uuidv4 } from 'uuid';
+import { join } from 'path';
+import { ReadStream, createReadStream } from 'fs';
+import * as fs from 'fs';
 
 @Injectable()
 export class GeneratorService {
@@ -81,5 +84,20 @@ export class GeneratorService {
     }
 
     return response.data;
+  }
+
+  downloadGeneratedVideo(key: string): ReadStream {
+    var filePath = join(
+      process.cwd(),
+      this.configService.get('UPLOAD_PATH'),
+      'generated-videos',
+      key,
+    );
+
+    if (!fs.existsSync(filePath)) {
+      throw new InternalServerErrorException('File not found');
+    }
+
+    return createReadStream(filePath);
   }
 }
