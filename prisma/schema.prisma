@@ -83,8 +83,9 @@ model Model {
 }
 
 model GeneratedVideo {
-  id  Int     @id @default(autoincrement())
-  key String?
+  id       Int     @id @default(autoincrement())
+  key      String?
+  fileName String
 
   user   User? @relation(fields: [userId], references: [id])
   userId Int?

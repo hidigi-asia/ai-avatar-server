@@ -1,6 +1,6 @@
 import { PartialType } from '@nestjs/swagger';
 import { GenerateAudioDto } from './generate-audio.dto';
-import { IsObject } from 'class-validator';
+import { IsInt, IsObject, IsString } from 'class-validator';
 
 export class GenerateVideoDto {
   @IsObject()
@@ -9,4 +9,8 @@ export class GenerateVideoDto {
   background: { key: string };
   @IsObject()
   audio: { key: string };
+  @IsString()
+  name: string;
+  @IsInt()
+  userId: number;
 }

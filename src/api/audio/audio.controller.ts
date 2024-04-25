@@ -46,8 +46,6 @@ export class AudioController {
 
   @Get(':key/download')
   async downloadOne(@Param('key') id: string, @Response() res) {
-    console.log(id);
-
     var file = await this.audioService.downloadOne(id);
 
     if (!file) {

@@ -22,25 +22,27 @@ export class GeneratorService {
       name: key,
     };
 
-    var response = await axios.post(
-      `${this.configService.get('AI_SERVER_URL')}/generate-audio`,
-      entry,
-    );
+    var url = `${this.configService.get('AI_SERVER_URL')}/generate_audio`;
+
+    var response = await axios.post(url, entry);
 
     if (response.status >= 200 && response.status < 400) {
       var responseBody = response.data;
 
       var audio = {
-        key: responseBody.data.key,
+        key: key,
         filename: response.data.data.key,
       };
 
-      this.prismaService.audio.create({
+      var audioResponse = await this.prismaService.audio.create({
         data: {
           key: audio.key,
-          fileName: audio.filename,
+          fileName: generateAudioDto.name,
+          userId: generateAudioDto.userId,
         },
       });
+
+      return audioResponse;
     }
 
     return response.data;
@@ -54,21 +56,26 @@ export class GeneratorService {
       name: key,
     };
 
-    var response = await axios.post(
-      `${this.configService.get('AI_SERVER_URL')}/generate-video`,
-      entry,
-    );
+    var url = `${this.configService.get('AI_SERVER_URL')}/generate_video`;
+
+    console.log(url);
+
+    var request = axios.post(url, entry);
+
+    var response = (await request) as any;
 
     if (response.status >= 200 && response.status < 400) {
       var responseBody = response.data;
 
       var video = {
-        key: responseBody.data.key,
+        key: key,
       };
 
       this.prismaService.generatedVideo.create({
         data: {
           key: video.key,
+          fileName: generateVideoDto.name,
+          userId: generateVideoDto.userId,
         },
       });
     }
