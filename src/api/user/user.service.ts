@@ -38,7 +38,8 @@ export class UserService {
   }
 
   async uploadAvatar(userId: number, file: Express.Multer.File) {
-    var key = uuidv4();
+    var ext = file.originalname.split('.').pop();
+    var key = uuidv4() + '.' + ext;
 
     const filePath = join(
       process.cwd(),
@@ -67,7 +68,8 @@ export class UserService {
   }
 
   async uploadBackground(userId: number, file: Express.Multer.File) {
-    var key = uuidv4();
+    var ext = file.originalname.split('.').pop();
+    var key = uuidv4() + '.' + ext;
 
     const filePath = join(
       process.cwd(),
@@ -96,7 +98,8 @@ export class UserService {
   }
 
   async uploadAudio(userId: number, file: Express.Multer.File) {
-    var key = uuidv4();
+    var ext = file.originalname.split('.').pop();
+    var key = uuidv4() + '.' + ext;
 
     const filePath = join(
       process.cwd(),
