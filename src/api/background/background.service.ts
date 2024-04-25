@@ -5,10 +5,14 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { ReadStream, createReadStream } from 'fs';
 import { join } from 'path';
 import * as fs from 'fs';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class BackgroundService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private configService: ConfigService,
+  ) {}
 
   async create(createBackgroundDto: CreateBackgroundDto) {
     return await this.prismaService.background.create({
@@ -38,7 +42,7 @@ export class BackgroundService {
   downloadOne(key: string): ReadStream {
     var filePath = join(
       process.cwd(),
-      'storage/python/uploads',
+      this.configService.get('UPLOAD_PATH'),
       'backgrounds',
       key,
     );

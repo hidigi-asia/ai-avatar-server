@@ -1,10 +1,11 @@
-import { IsInt, IsString } from 'class-validator';
+import { IsInt, IsOptional, IsString } from 'class-validator';
 
 export class CreateAvatarDto {
   @IsString()
   fileName: string;
   @IsString()
   url: string;
+  @IsOptional()
   @IsInt()
-  userId: number;
+  userId?: number;
 }

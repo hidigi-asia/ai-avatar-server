@@ -5,10 +5,14 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
 import * as fs from 'fs';
 import { join } from 'path';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private configService: ConfigService,
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
     return await this.prismaService.user.create({ data: createUserDto });
@@ -38,7 +42,7 @@ export class UserService {
 
     const filePath = join(
       process.cwd(),
-      'storage/python/uploads',
+      this.configService.get('UPLOAD_PATH'),
       'avatars',
       key,
     );
@@ -58,7 +62,7 @@ export class UserService {
 
   async getAvatars(userId: number) {
     return await this.prismaService.avatar.findMany({
-      where: { userId: userId },
+      where: { userId: userId || null },
     });
   }
 
@@ -67,7 +71,7 @@ export class UserService {
 
     const filePath = join(
       process.cwd(),
-      'storage/python/uploads',
+      this.configService.get('UPLOAD_PATH'),
       'backgrounds',
       key,
     );
@@ -96,7 +100,7 @@ export class UserService {
 
     const filePath = join(
       process.cwd(),
-      'storage/python/uploads',
+      this.configService.get('UPLOAD_PATH'),
       'audios',
       key,
     );

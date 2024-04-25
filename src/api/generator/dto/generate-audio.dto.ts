@@ -1,6 +1,5 @@
 export class GenerateAudioDto {
   text: string;
-  name: string;
   type: string;
   tts_model: string;
   voice_id: string;

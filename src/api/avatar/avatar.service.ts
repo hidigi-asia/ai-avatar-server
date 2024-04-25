@@ -5,10 +5,14 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { ReadStream, createReadStream } from 'fs';
 import { join } from 'path';
 import * as fs from 'fs';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AvatarService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private configService: ConfigService,
+  ) {}
 
   async create(createAvatarDto: CreateAvatarDto) {
     return await this.prismaService.avatar.create({ data: createAvatarDto });
@@ -36,7 +40,7 @@ export class AvatarService {
   downloadOne(key: string): ReadStream {
     var filePath = join(
       process.cwd(),
-      'storage/python/uploads',
+      this.configService.get('UPLOAD_PATH'),
       'avatars',
       key,
     );

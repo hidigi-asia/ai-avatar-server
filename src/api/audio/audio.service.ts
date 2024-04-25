@@ -6,10 +6,14 @@ import { ReadStream, createReadStream } from 'fs';
 import { join } from 'path';
 
 import * as fs from 'fs';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AudioService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private configService: ConfigService,
+  ) {}
 
   async create(createAudioDto: CreateAudioDto) {
     return await this.prismaService.audio.create({ data: createAudioDto });
@@ -35,7 +39,12 @@ export class AudioService {
   }
 
   downloadOne(key: string): ReadStream {
-    var filePath = join(process.cwd(), 'storage/python/uploads', 'audios', key);
+    var filePath = join(
+      process.cwd(),
+      this.configService.get('UPLOAD_PATH'),
+      'audios',
+      key,
+    );
 
     if (!fs.existsSync(filePath)) {
       throw new InternalServerErrorException('File not found');
