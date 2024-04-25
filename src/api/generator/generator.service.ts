@@ -15,7 +15,7 @@ export class GeneratorService {
   ) {}
 
   async generateAudio(generateAudioDto: GenerateAudioDto) {
-    var key = uuidv4();
+    var key = uuidv4() + '.wav';
 
     var entry = {
       ...generateAudioDto,
@@ -49,7 +49,7 @@ export class GeneratorService {
   }
 
   async generateVideo(generateVideoDto: GenerateVideoDto) {
-    var key = uuidv4();
+    var key = uuidv4() + '.mp4';
 
     var entry = {
       ...generateVideoDto,
