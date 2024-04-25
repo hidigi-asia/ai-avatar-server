@@ -5,7 +5,7 @@ import { GenerateAudioDto } from './dto/generate-audio.dto';
 import { GenerateVideoDto } from './dto/generate-video.dto';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
-import { uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class GeneratorService {
