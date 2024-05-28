@@ -9,6 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
 import { HttpModule } from '@nestjs/axios';
 import { PrismaModule } from '@/prisma/prisma.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { PrismaModule } from '@/prisma/prisma.module';
     ModelModule,
     GeneratorModule,
     AudioModule,
+    AuthModule,
   ],
 })
 export class ApiModule {}
