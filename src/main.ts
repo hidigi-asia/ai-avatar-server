@@ -1,17 +1,21 @@
-import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-import { ApiModule } from './api/api.module';
+import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as morgan from 'morgan';
+import { ApiModule } from './api/api.module';
+import { RemotionModule } from './remotion/remotion.module';
 
 async function bootstrap() {
   const apiServer = await NestFactory.create(ApiModule);
+  const remotionServer = await NestFactory.create(RemotionModule);
 
   apiServer.use(morgan('dev'));
+  remotionServer.use(morgan('dev'));
 
   apiServer.setGlobalPrefix('api');
 
   apiServer.enableCors();
+  remotionServer.enableCors();
 
   apiServer.useGlobalPipes(new ValidationPipe());
 
@@ -21,6 +25,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', apiServer, document);
 
   await apiServer.listen(3000);
+  await remotionServer.listen(3001);
 }
 
 bootstrap();

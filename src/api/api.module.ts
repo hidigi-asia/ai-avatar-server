@@ -1,15 +1,19 @@
+import { PrismaModule } from '@/prisma/prisma.module';
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { UserModule } from './user/user.module';
-import { AvatarModule } from './avatar/avatar.module';
-import { BackgroundModule } from './background/background.module';
-import { ModelModule } from './model/model.module';
-import { GeneratorModule } from './generator/generator.module';
-import { AudioModule } from './audio/audio.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
-import { HttpModule } from '@nestjs/axios';
-import { PrismaModule } from '@/prisma/prisma.module';
+import { AudioModule } from './audio/audio.module';
 import { AuthModule } from './auth/auth.module';
+import { AvatarTemplatesModule } from './avatar-templates/avatar-templates.module';
+import { AvatarModule } from './avatar/avatar.module';
+import { BackgroundModule } from './background/background.module';
+import { GeneratorModule } from './generator/generator.module';
+import { MailModule } from './mail/mail.module';
+import { ModelModule } from './model/model.module';
+import { RenderModule } from './render/render.module';
+import { TemplatesModule } from './templates/templates.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -31,6 +35,10 @@ import { AuthModule } from './auth/auth.module';
     GeneratorModule,
     AudioModule,
     AuthModule,
+    TemplatesModule,
+    AvatarTemplatesModule,
+    MailModule,
+    RenderModule,
   ],
 })
 export class ApiModule {}

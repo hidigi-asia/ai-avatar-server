@@ -6,11 +6,14 @@ import {
   Param,
   Post,
   Response,
+  UseGuards,
 } from '@nestjs/common';
-import { GeneratorService } from './generator.service';
 import { ApiTags } from '@nestjs/swagger';
+import { GetUser } from '../auth/decorator/get-user';
+import { JwtAuthGuard } from '../auth/guard/jwt.guard';
 import { GenerateAudioDto } from './dto/generate-audio.dto';
-import { GenerateVideoDto } from './dto/generate-video.dto';
+import { GenerateProjectDto } from './dto/generate-video.dto';
+import { GeneratorService } from './generator.service';
 
 @ApiTags('Generators')
 @Controller('generators')
@@ -22,9 +25,13 @@ export class GeneratorController {
     return this.generatorService.generateAudio(generateAudioDto);
   }
 
-  @Post('generate-video')
-  generateVideo(@Body() generateVideoDto: GenerateVideoDto) {
-    return this.generatorService.generateVideo(generateVideoDto);
+  @Post('generate-project')
+  @UseGuards(JwtAuthGuard)
+  generateProject(
+    @Body() generateProjectDto: GenerateProjectDto,
+    @GetUser() user,
+  ) {
+    return this.generatorService.generateProject(generateProjectDto, +user.id);
   }
 
   @Get('generated/videos/:key/download')

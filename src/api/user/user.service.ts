@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '@/prisma/prisma.service';
-import { v4 as uuidv4 } from 'uuid';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import * as fs from 'fs';
 import { join } from 'path';
-import { ConfigService } from '@nestjs/config';
+import { v4 as uuidv4 } from 'uuid';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -23,7 +23,7 @@ export class UserService {
   }
 
   async findOne(id: number) {
-    return await this.prismaService.user.findUnique({ where: { id } });
+    return await this.prismaService.user.findFirst({ where: { id } });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {

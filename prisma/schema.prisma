@@ -19,6 +19,8 @@ model User {
   username String?
   password String
 
+  isActive Boolean @default(false)
+
   avatars         Avatar[]
   backgrounds     Background[]
   audios          Audio[]

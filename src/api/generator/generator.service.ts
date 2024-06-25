@@ -1,14 +1,13 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
-import { HttpService } from '@nestjs/axios';
-import { GenerateAudioDto } from './dto/generate-audio.dto';
-import { GenerateVideoDto } from './dto/generate-video.dto';
-import axios from 'axios';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { v4 as uuidv4 } from 'uuid';
-import { join } from 'path';
-import { ReadStream, createReadStream } from 'fs';
+import axios from 'axios';
 import * as fs from 'fs';
+import { ReadStream, createReadStream } from 'fs';
+import { join } from 'path';
+import { v4 as uuidv4 } from 'uuid';
+import { GenerateAudioDto } from './dto/generate-audio.dto';
+import { GenerateProjectDto } from './dto/generate-video.dto';
 
 @Injectable()
 export class GeneratorService {
@@ -51,39 +50,42 @@ export class GeneratorService {
     return response.data;
   }
 
-  async generateVideo(generateVideoDto: GenerateVideoDto) {
-    var key = uuidv4() + '.mp4';
+  async generateProject(generateVideoDto: GenerateProjectDto, userId: number) {
+    try {
+      var key = uuidv4() + '.mp4';
 
-    var entry = {
-      ...generateVideoDto,
-      name: key,
-    };
-
-    var url = `${this.configService.get('AI_SERVER_URL')}/generate_video`;
-
-    console.log(url);
-
-    var request = axios.post(url, entry);
-
-    var response = (await request) as any;
-
-    if (response.status >= 200 && response.status < 400) {
-      var responseBody = response.data;
-
-      var video = {
-        key: key,
+      var entry = {
+        ...generateVideoDto,
+        name: key,
+        userId: userId,
       };
 
-      this.prismaService.generatedVideo.create({
-        data: {
-          key: video.key,
-          fileName: generateVideoDto.name,
-          userId: generateVideoDto.userId,
-        },
-      });
-    }
+      var url = `${this.configService.get('AI_SERVER_URL')}/generate_video`;
 
-    return response.data;
+      var request = axios.post(url, entry);
+
+      var response = (await request) as any;
+
+      if (response.status >= 200 && response.status < 400) {
+        var responseBody = response.data;
+
+        var video = {
+          key: key,
+        };
+
+        this.prismaService.generatedVideo.create({
+          data: {
+            key: video.key,
+            fileName: generateVideoDto.name,
+            userId: userId,
+          },
+        });
+      }
+
+      return response.data;
+    } catch (error) {
+      throw new InternalServerErrorException('Something went wrong');
+    }
   }
 
   downloadGeneratedVideo(key: string): ReadStream {
