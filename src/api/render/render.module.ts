@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { RenderService } from './render.service';
 import { RenderController } from './render.controller';
+import { RenderService } from './render.service';
 
 @Module({
   controllers: [RenderController],

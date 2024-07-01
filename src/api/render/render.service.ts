@@ -37,7 +37,7 @@ export class RenderService {
 
     await renderMedia({
       composition,
-      serveUrl: 'http://localhost:3001',
+      serveUrl: 'remotion',
       codec: 'h264',
       outputLocation,
     });

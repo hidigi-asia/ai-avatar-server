@@ -1,6 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { RenderService } from './render.service';
 
+@ApiTags('Renders')
 @Controller('render')
 export class RenderController {
   constructor(private readonly renderService: RenderService) {}

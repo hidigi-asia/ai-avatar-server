@@ -3,7 +3,7 @@ import { IsString } from 'class-validator';
 
 export class RegisterDto {
   @IsValidEmail()
-  identifier: string;
+  email: string;
   @IsString()
   password: string;
 }

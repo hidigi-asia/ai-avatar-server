@@ -46,10 +46,10 @@ export class AuthService {
     };
   }
 
-  async register(identifier: string, password: string) {
+  async register(email: string, password: string) {
     var user = await this.prismaService.user.findFirst({
       where: {
-        email: identifier,
+        email: email,
       },
     });
 
@@ -58,7 +58,7 @@ export class AuthService {
     }
 
     const userToCreate = {
-      email: identifier,
+      email: email,
       password,
     };
 

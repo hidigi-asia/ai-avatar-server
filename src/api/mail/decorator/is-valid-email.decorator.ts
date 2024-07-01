@@ -12,6 +12,10 @@ import * as nodemailer from 'nodemailer';
 class IsValidEmailConstraint implements ValidatorConstraintInterface {
   validate(email: string, args: ValidationArguments) {
     return new Promise<boolean>((resolve, reject) => {
+      if (!email) {
+        return resolve(false);
+      }
+
       const domain = email.split('@')[1];
 
       resolveMx(domain, (err, addresses) => {
