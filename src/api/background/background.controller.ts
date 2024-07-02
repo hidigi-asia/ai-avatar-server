@@ -1,18 +1,18 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  Response,
+  Get,
   InternalServerErrorException,
+  Param,
+  Patch,
+  Post,
+  Response,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { BackgroundService } from './background.service';
 import { CreateBackgroundDto } from './dto/create-background.dto';
 import { UpdateBackgroundDto } from './dto/update-background.dto';
-import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Backgrounds')
 @Controller('backgrounds')

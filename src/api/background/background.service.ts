@@ -1,11 +1,11 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { CreateBackgroundDto } from './dto/create-background.dto';
-import { UpdateBackgroundDto } from './dto/update-background.dto';
 import { PrismaService } from '@/prisma/prisma.service';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import * as fs from 'fs';
 import { ReadStream, createReadStream } from 'fs';
 import { join } from 'path';
-import * as fs from 'fs';
-import { ConfigService } from '@nestjs/config';
+import { CreateBackgroundDto } from './dto/create-background.dto';
+import { UpdateBackgroundDto } from './dto/update-background.dto';
 
 @Injectable()
 export class BackgroundService {
@@ -46,6 +46,10 @@ export class BackgroundService {
       'backgrounds',
       key,
     );
+
+    if (!fs.existsSync(filePath)) {
+      fs.mkdirSync(filePath, { recursive: true });
+    }
 
     if (!fs.existsSync(filePath)) {
       throw new InternalServerErrorException('File not found');

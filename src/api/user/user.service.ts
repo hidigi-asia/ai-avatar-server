@@ -41,12 +41,17 @@ export class UserService {
     var ext = file.originalname.split('.').pop();
     var key = uuidv4() + '.' + ext;
 
-    const filePath = join(
+    const folderPath = join(
       process.cwd(),
       this.configService.get('UPLOAD_PATH'),
       'avatars',
-      key,
     );
+
+    const filePath = join(folderPath, key);
+
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath, { recursive: true });
+    }
 
     fs.writeFileSync(filePath, file.buffer);
 
@@ -71,12 +76,17 @@ export class UserService {
     var ext = file.originalname.split('.').pop();
     var key = uuidv4() + '.' + ext;
 
-    const filePath = join(
+    const folderPath = join(
       process.cwd(),
       this.configService.get('UPLOAD_PATH'),
       'backgrounds',
-      key,
     );
+
+    const filePath = join(folderPath, key);
+
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath, { recursive: true });
+    }
 
     fs.writeFileSync(filePath, file.buffer);
 
@@ -101,12 +111,17 @@ export class UserService {
     var ext = file.originalname.split('.').pop();
     var key = uuidv4() + '.' + ext;
 
-    const filePath = join(
+    const folderPath = join(
       process.cwd(),
       this.configService.get('UPLOAD_PATH'),
       'audios',
-      key,
     );
+
+    const filePath = join(folderPath, key);
+
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath, { recursive: true });
+    }
 
     fs.writeFileSync(filePath, file.buffer);
 

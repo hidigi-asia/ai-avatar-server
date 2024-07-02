@@ -3,6 +3,7 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
+import * as fs from 'fs';
 import { AudioModule } from './audio/audio.module';
 import { AuthModule } from './auth/auth.module';
 import { AvatarTemplatesModule } from './avatar-templates/avatar-templates.module';
@@ -22,9 +23,17 @@ import { UserModule } from './user/user.module';
     MulterModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService) => ({
-        dest: configService.get('UPLOAD_PATH'),
-      }),
+      useFactory: async (configService) => {
+        var filePath = configService.get('UPLOAD_PATH');
+
+        if (!fs.existsSync(filePath)) {
+          fs.mkdirSync(filePath, { recursive: true });
+        }
+
+        return {
+          dest: filePath,
+        };
+      },
     }),
     HttpModule.register({}),
     PrismaModule,

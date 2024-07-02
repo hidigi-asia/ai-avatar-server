@@ -1,12 +1,12 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { CreateAudioDto } from './dto/create-audio.dto';
-import { UpdateAudioDto } from './dto/update-audio.dto';
 import { PrismaService } from '@/prisma/prisma.service';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ReadStream, createReadStream } from 'fs';
 import { join } from 'path';
+import { CreateAudioDto } from './dto/create-audio.dto';
+import { UpdateAudioDto } from './dto/update-audio.dto';
 
-import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
+import * as fs from 'fs';
 
 @Injectable()
 export class AudioService {
@@ -45,6 +45,10 @@ export class AudioService {
       'audios',
       key,
     );
+
+    if (!fs.existsSync(filePath)) {
+      fs.mkdirSync(filePath, { recursive: true });
+    }
 
     if (!fs.existsSync(filePath)) {
       throw new InternalServerErrorException('File not found');
