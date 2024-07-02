@@ -55,32 +55,104 @@ export class GeneratorService {
       var key = uuidv4() + '.mp4';
 
       var entry = {
-        ...generateVideoDto,
-        name: key,
-        userId: userId,
+        "project_data": {
+          "user_id": 0,
+          "project": {
+            "name": "string",
+            "output_size": [0, 0],
+            "slides": [
+              {
+                "name": "slide1",
+                "elements": [
+                  {
+                    "id": "string",
+                    "name": "string",
+                    "type": "string",
+                    "url": "business_woman_suit.webm",
+                    "kind": "avatar",
+                    "transform": {
+                      "position": {"x": 0, "y": 0},
+                      "size": {"width": 0, "height": 0}
+                    },
+                    "has_audio": false
+                  },
+                  {
+                    "id": "string",
+                    "name": "string",
+                    "type": "string",
+                    "url": "Hello.wav",
+                    "kind": "speech",
+                    "transform": {
+                      "position": {"x": 0, "y": 0},
+                      "size": {"width": 0, "height": 0}
+                    },
+                    "has_audio": true
+                  }
+                ]
+              },
+              {
+                "name": "slide2",
+                "elements": [
+                  {
+                    "id": "string2",
+                    "name": "string2",
+                    "type": "string",
+                    "url": "Greeting.mp4",
+                    "kind": "avatar",
+                    "transform": {
+                      "position": {"x": 1, "y": 1},
+                      "size": {"width": 1, "height": 1}
+                    },
+                    "has_audio": false
+                  },
+                  {
+                    "id": "string2",
+                    "name": "string2",
+                    "type": "string",
+                    "url": "Tidak.wav",
+                    "kind": "speech",
+                    "transform": {
+                      "position": {"x": 1, "y": 1},
+                      "size": {"width": 1, "height": 1}
+                    },
+                    "has_audio": true
+                  }
+                ]
+              }
+            ]
+          },
+          "voiceGeneratorConfig": {
+            "key": "string",
+            "model": {},
+            "stability": 0,
+            "similarityBoost": 0.0,
+            "style": 0.0,
+            "inputText": "string"
+          }
+        },
+        "other_video_urls": ["string"]
       };
 
-      var url = `${this.configService.get('AI_SERVER_URL')}/generate_video`;
+      var url = `${this.configService.get('AI_SERVER_URL')}/process-project`;
 
       var request = axios.post(url, entry);
 
       var response = (await request) as any;
 
-      if (response.status >= 200 && response.status < 400) {
-        var responseBody = response.data;
+      // if (response.status >= 200 && response.status < 400) {
+      //   var responseBody = response.data;
 
-        var video = {
-          key: key,
-        };
-
-        this.prismaService.generatedVideo.create({
-          data: {
-            key: video.key,
-            fileName: generateVideoDto.name,
-            userId: userId,
-          },
-        });
-      }
+      //   var video = {
+      //     key: key,
+      //   };
+      //   this.prismaService.generatedVideo.create({
+      //     data: {
+      //       key: video.key,
+      //       fileName: generateVideoDto.name,
+      //       userId: userId,
+      //     },
+      //   });
+      // }
 
       return response.data;
     } catch (error) {
