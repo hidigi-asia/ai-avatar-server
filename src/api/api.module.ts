@@ -3,22 +3,16 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import * as fs from 'fs';
-import { AudioModule } from './audio/audio.module';
-import { AuthModule } from './auth/auth.module';
-import { AvatarTemplatesModule } from './avatar-templates/avatar-templates.module';
-import { AvatarModule } from './avatar/avatar.module';
-import { BackgroundModule } from './background/background.module';
-import { GeneratorModule } from './generator/generator.module';
-import { MailModule } from './mail/mail.module';
-import { ModelModule } from './model/model.module';
-import { RenderModule } from './render/render.module';
-import { TemplatesModule } from './templates/templates.module';
-import { UserModule } from './user/user.module';
+import { V1Module } from './v1/v1.module';
+import { V2Module } from './v2/v2.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     ApiModule,
     MulterModule.registerAsync({
       imports: [ConfigModule],
@@ -36,18 +30,8 @@ import { UserModule } from './user/user.module';
       },
     }),
     HttpModule.register({}),
-    PrismaModule,
-    UserModule,
-    AvatarModule,
-    BackgroundModule,
-    ModelModule,
-    GeneratorModule,
-    AudioModule,
-    AuthModule,
-    TemplatesModule,
-    AvatarTemplatesModule,
-    MailModule,
-    RenderModule,
+    // V1Module,
+    V2Module,
   ],
 })
 export class ApiModule {}
