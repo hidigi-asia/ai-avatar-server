@@ -1,17 +1,7 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
-import { ProjectsService } from './projects.service';
-import { CreateProjectDto } from './dto/create-project.dto';
-import { UpdateProjectDto } from './dto/update-project.dto';
 import { Crud, CrudController } from '@dataui/crud';
+import { Body, Controller, Param, Post } from '@nestjs/common';
 import { Project } from './entities/project.entity';
+import { ProjectsService } from './projects.service';
 
 @Crud({
   model: {
@@ -26,4 +16,9 @@ import { Project } from './entities/project.entity';
 @Controller('projects')
 export class ProjectsController implements CrudController<Project> {
   constructor(public service: ProjectsService) {}
+
+  @Post(':id/export')
+  async export(@Param('id') id: string, @Body() body: any): Promise<any> {
+    return this.service.export(id, body);
+  }
 }

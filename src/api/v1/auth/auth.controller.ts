@@ -39,7 +39,7 @@ export class AuthController {
   @Post('activate')
   async activate(@Query('code') code: string, @Res() res) {
     // var redirectUrl = this.configService.get('SERVER_URL');
-    var redirectUrl = 'http://localhost:5173';
+    var redirectUrl = 'http://172.26.86.0:5173';
 
     var user = await this.authService.activate(code);
 
@@ -73,6 +73,8 @@ export class AuthController {
 
     var token = result.accessToken;
 
-    res.redirect('http://localhost:5173/oauth2/callback?accessToken=' + token);
+    res.redirect(
+      'http://172.26.86.0:5173/oauth2/callback?accessToken=' + token,
+    );
   }
 }

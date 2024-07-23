@@ -76,7 +76,7 @@ export class AuthService {
 
     const verification_link =
       // this.configService.get<string>('SERVER_URL') +
-      'http://localhost:5173' + '/activate?code=' + activationToken;
+      'http://172.26.86.0:5173' + '/activate?code=' + activationToken;
 
     var body = `<html>
       <head>
